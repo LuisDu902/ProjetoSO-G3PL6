@@ -1,10 +1,10 @@
-all : txt2epub
+all : samples
 
-txt2epub : txt2epub.o
-	gcc -o txt2epub txt2epub.o -Wall -Wextra
+samples : samples.o
+	gcc -o samples samples.o -Wall -Wextra
 
-txt2epub.o : txt2epub.c
-	gcc -c txt2epub.c -Wall -Wextra
+samples.o : samples.c
+	gcc -c samples.c -Wall -Wextra
 
 clean :
-	rm  txt2epub *.o 
+	rm  samples *.o 
