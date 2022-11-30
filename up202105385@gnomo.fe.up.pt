@@ -1,0 +1,91 @@
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <sys/wait.h>
+#include <string.h>
+#include <errno.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+
+int main(int argc, char* argv[]) {
+    
+    int n = atoi(argv[1]);
+    double p = atof(argv[2]);
+    int t = atoi(argv[3]);
+    
+    int fd_write;
+    int fd_read;
+
+    char read_pipe[64] = "\0";
+    char write_pipe[64] = "\0";
+    char pipe[64] = "\0";
+    pid_t pid;
+    //creating pipes
+    printf("\nCreating pipes:\n\n");
+
+    for (int i = 1; i < n; i++){
+        //naming   
+        sprintf(pipe,"pipe%dto%d",i,i+1);
+        
+	    //creating pipe
+        mkfifo(pipe, 0666);
+        printf("%s connecting p%d to p%d\n", pipe, i, i+1);
+    }
+    sprintf(pipe,"pipe%dto%d",n,1);
+    mkfifo(pipe, 0666);
+    printf("%s connecting p%d to p1\n\n", pipe, n);
+
+    sprintf(read_pipe,"pipe%dto1",n); 
+    sprintf(write_pipe,"pipe1to2"); 
+    
+    for (int i = 2; i <= n; i++){ 
+        
+        if ((pid = fork()) < 0) {
+            perror("fork error");
+            exit(EXIT_FAILURE);
+            }
+        else if (pid == 0){  
+            sprintf(read_pipe,"pipe%dto%d",i-1,i); 
+           
+            if (i == n){
+                sprintf(write_pipe,"pipe%dto1",n);
+                fd_write = open(write_pipe,O_WRONLY);
+                int token = 0;
+                write(fd_write,&token,sizeof(int));
+                close(fd_write);
+            }
+            else sprintf(write_pipe,"pipe%dto%d",i,i+1);
+            break;
+        }
+    }
+    srand(getpid());
+    for(;;){
+        
+        fd_read = open(read_pipe,O_RDONLY);
+        int token;
+        if (read(fd_read,&token,sizeof(int)) < 0){
+            fprintf(stderr, "Unable to read from pipe: %s\n", strerror(errno));
+        }
+        
+        token++;
+        double random = (double) rand() / (double) RAND_MAX;
+        
+        close(fd_read);
+        
+        if (random <= p) { 
+            printf("[p%d] lock on token (val = %d) - random value: %f\n",getpid(),token,random);
+            sleep(t);
+            printf("[p%d] unlock on token\n",getpid());
+        }
+
+        fd_write = open(write_pipe,O_WRONLY);
+        if (write(fd_write,&token,sizeof(int)) < 0){
+            fprintf(stderr, "Unable to write to pipe: %s\n", strerror(errno));
+        }
+        close(fd_write);
+    }
+
+}
+//perguntar o srand(o que passar)
+//numero do processo
