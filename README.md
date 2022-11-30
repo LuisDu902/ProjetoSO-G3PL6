@@ -1,8 +1,8 @@
-# ProjetoSO-T6G3
+# ProjetoSO-G2PL6
 
 Este projeto foi realizado por:
   
-  - José Santos - up202108729
-  - Luís Du - up202105385
+  - José Miguel Sereno Santos - up202108729
+  - Luís Pedro Du - up202105385
   - Madalena Ye - up202108795
-  - Sofia Pinto - up202108682
+  - Sofia Vieira Pinto - up202108682
