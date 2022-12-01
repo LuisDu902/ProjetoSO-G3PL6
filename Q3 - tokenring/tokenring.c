@@ -89,7 +89,7 @@ int main(int argc, char* argv[]) {
                     fprintf(stderr, "Unable to open write_pipe: %s\n", strerror(errno));
                 }
                 
-                /* initialise token */
+                /* initialize token */
                 int token = 0;
 
                 /* write token */
