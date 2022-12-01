@@ -56,10 +56,10 @@ int main(int argc, char* argv[]) {
         }
     }
    
-    /*process 1: reads from pipe(n)to(1)*/
+    /* process 1: reads from pipe(n)to(1) */
     sprintf(read_pipe,"pipe%dto1",n); 
 
-    /*process 1: writes to pipe(1)to(2)*/
+    /* process 1: writes to pipe(1)to(2) */
     sprintf(write_pipe,"pipe1to2"); 
     
     for (int i = 2; i <= n; i++){ 
