@@ -1,4 +1,4 @@
-# ProjetoSO-G2PL6
+# ProjetoSO-G3PL6
 
 Este projeto foi realizado por:
   
